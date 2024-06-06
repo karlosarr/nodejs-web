@@ -32,4 +32,4 @@ jobs:
       uses: docker/build-push-action@v5.3.0
       with:
         push: true
-        tags: karlosarr/nodejs-web:$VERSION,karlosarr/nodejs-web:latest
+        tags: karlosarr/nodejs-web:${{env.VERSION}},karlosarr/nodejs-web:latest
