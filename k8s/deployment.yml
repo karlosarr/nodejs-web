@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nodejs
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nodejs
+    spec:
+      containers:
+      - name: nodejs-app
+        image: "#{REPO_URL}#/#{REPO_PATH}#/#{PROJECT_NAME}#:#{TAG}#"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: nodejs-port
+          containerPort: 3000
+        env:
+        - name: PORT
+          value: "3000"
+        - name: VARIABLE
+          value: "algo"
+        - name: SECRETO
+          valueFrom:
+            secretKeyRef:
+              name: secretkv
+              key: SECRETO
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+            httpHeaders:
+            - name: User-Agent
+              value: k8
+          initialDelaySeconds: 30
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            port: 3000
+            path: /
+          periodSeconds: 5
+      terminationGracePeriodSeconds: 30

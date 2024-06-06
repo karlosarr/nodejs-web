@@ -1,0 +1,64 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- main
+- develop
+
+resources:
+- repo: self
+
+variables:
+  TAG: '$(Build.BuildNumber)'
+  PROJECT_NAME: 'nodejs'
+  REPO_PATH: 'karlosarr'
+  REPO_URL: 'docker.io'
+  
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: '$(REPO_PATH)/$(PROJECT_NAME)'
+        command: 'buildAndPush'
+        Dockerfile: 'Dockerfile'
+        tags: |
+          $(TAG)
+          latest
+    - task: replacetokens@6
+      inputs:
+        root: 'k8s/'
+        sources: '*.yml'
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/k8s'
+        includeRootFolder: true
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/k8s-$(Build.BuildId).zip'
+        replaceExistingArchive: true
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+  - job: Deploy
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+    displayName: 'Deploy to Production'
+    dependsOn: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: CmdLine@2
+      displayName: 'Deploy to Production'
+      inputs:
+        script: 'echo "deploy"'

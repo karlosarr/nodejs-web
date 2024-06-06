@@ -1,0 +1,10 @@
+version: '3.9'
+services:
+  nodejs:
+    container_name: nodejs
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: nodejs
+    ports:
+      - ${PORT}:${PORT}
