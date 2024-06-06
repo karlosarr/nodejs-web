@@ -29,8 +29,7 @@ jobs:
       run: |
         echo "version=$VERSION"
     - name: Build and push
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v5.3.0
       with:
-        image: karlosarr/nodejs-web
         push: true
-        tags: $VERSION, latest
+        tags: karlosarr/nodejs-web:$VERSION,karlosarr/nodejs-web:latest
