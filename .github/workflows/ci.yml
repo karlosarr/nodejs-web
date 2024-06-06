@@ -27,3 +27,6 @@ jobs:
     - name: get version
       run: |
         echo "version=${{steps.vars.outputs.version}}"
+    - name: Imprimir secretos
+      run: |
+        echo "SECRETO=${{secrets.SECRETO}}"
