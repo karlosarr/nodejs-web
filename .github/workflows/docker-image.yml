@@ -2,9 +2,8 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main", "feature/cicd" ]
-  pull_request:
-    branches: [ "main" ]
+    tags:
+      - '*.*.*'
 jobs:
   build:
     runs-on: ubuntu-latest
