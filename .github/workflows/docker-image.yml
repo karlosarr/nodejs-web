@@ -5,8 +5,6 @@ on:
     branches: [ "main", "feature/cicd" ]
   pull_request:
     branches: [ "main" ]
-env: 
-  VERSION: 0.0.1
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,14 +20,15 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: set version
+      id: vars
+      run: |
+        echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
     - name: get version
       run: |
-        export VERSION=$(node -p "require('./package.json').version")
-    - name: get version
-      run: |
-        echo "version=$VERSION"
+        echo "version=${{steps.vars.outputs.version}}"
     - name: Build and push
       uses: docker/build-push-action@v5.3.0
       with:
         push: true
-        tags: karlosarr/nodejs-web:${{env.VERSION}},karlosarr/nodejs-web:latest
+        tags: karlosarr/nodejs-web:${{steps.vars.outputs.version}},karlosarr/nodejs-web:latest
