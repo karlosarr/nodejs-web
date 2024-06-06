@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.1.1](https://github.com/karlosarr/nodejs-web/compare/v1.1.0...v1.1.1) (2024-06-06)
+
+
+### Bug Fixes
+
+* Update ci.yml ([8af8e03](https://github.com/karlosarr/nodejs-web/commit/8af8e03c94a120d8fb3fe9b822155d970d39e9c2))
+* Update docker-image.yml ([bd546a9](https://github.com/karlosarr/nodejs-web/commit/bd546a921a13248a8504b895165aaa1b8f5fef41))
+
 ## [1.1.0](https://github.com/karlosarr/nodejs-web/compare/v1.0.0...v1.1.0) (2024-06-06)
 
 
