@@ -48,4 +48,4 @@ jobs:
         app-name: 'api-karlosarr'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_9e197be40bd04bba9b8a45fef716635c }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_f752d259129a460594605db2ffcbaad3 }}/karlosarr/nodejs-web:${{ github.sha }}'
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_f752d259129a460594605db2ffcbaad3 }}/nodejs-web:${{ github.sha }}'
